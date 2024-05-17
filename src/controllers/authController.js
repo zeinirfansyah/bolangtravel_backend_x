@@ -14,12 +14,12 @@ async function register(req, res) {
   const { fullname, email, phone, address, avatar, username, role, password } =
     req.body;
 
-  const existsUser = await db("users")
+  const userExists = await db("users")
     .where("username", username)
     .orWhere("email", email)
     .first();
 
-  if (existsUser) {
+  if (userExists) {
     return res
       .status(409)
       .json({ message: "Username or email already exists" });
