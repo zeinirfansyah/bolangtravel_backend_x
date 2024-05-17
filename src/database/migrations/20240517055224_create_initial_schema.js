@@ -38,9 +38,15 @@ exports.up = function (knex) {
       table.string("destination_thumbnail");
       table.datetime("created_at").defaultTo(knex.fn.now());
       table.datetime("updated_at").nullable();
+    })
+    .createTable("package_destinations", (table) => {
+      table.increments("id").primary();
 
       table.integer("travel_package_id").unsigned();
       table.foreign("travel_package_id").references("travel_packages.id");
+
+      table.integer("destination_id").unsigned();
+      table.foreign("destination_id").references("destinations.id");
     })
     .createTable("rundowns", (table) => {
       table.increments("id").primary();
@@ -73,7 +79,7 @@ exports.up = function (knex) {
       table.datetime("created_at").defaultTo(knex.fn.now());
       table.datetime("updated_at").nullable();
 
-      table.integer("booking_id").unsigned();
+      table.integer('booking_id').unsigned().unique();
       table.foreign("booking_id").references("bookings.id");
     });
 };
