@@ -1,27 +1,25 @@
 const db = require("../database/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
 require("dotenv").config();
 
-const { validationResult } = require("express-validator");
-
 async function register(req, res) {
-  const error = validationResult(req);
+  const errors = validationResult(req);
 
-  if (!error.isEmpty()) {
-    return res.status(400).json({ errors: error.array() });
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
 
-  const { fullname, email, phone, address, avatar, username, role, password } = req.body;
+  const { fullname, email, phone, address, avatar, username, role, password } =
+    req.body;
 
-  const exsistsUser = await db
-    .select("*")
-    .from("users")
+  const existsUser = await db("users")
     .where("username", username)
     .orWhere("email", email)
     .first();
 
-  if (exsistsUser) {
+  if (existsUser) {
     return res
       .status(409)
       .json({ message: "Username or email already exists" });
@@ -29,16 +27,18 @@ async function register(req, res) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await db("users").insert({
-    fullname,
-    email,
-    phone,
-    address,
-    avatar,
-    username,
-    role,
-    password: hashedPassword,
-  });
+  const user = await db("users")
+    .insert({
+      fullname,
+      email,
+      phone,
+      address,
+      avatar,
+      username,
+      role,
+      password: hashedPassword,
+    })
+    .returning("id");
 
   const data = {
     id: user[0],
@@ -60,11 +60,7 @@ async function register(req, res) {
 async function login(req, res) {
   const { username, password } = req.body;
 
-  const user = await db
-    .select("*")
-    .from("users")
-    .where("username", username)
-    .first();
+  const user = await db("users").where("username", username).first();
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -77,9 +73,9 @@ async function login(req, res) {
   }
 
   const accessToken = jwt.sign(
-    { id: user.id, username: user.username },
+    { id: user.id, username: user.username, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "15m" }
+    { expiresIn: "1h" }
   );
 
   const data = {
@@ -93,7 +89,6 @@ async function login(req, res) {
     data,
   });
 }
-
 
 async function logout(req, res) {
   return res.status(200).json({
