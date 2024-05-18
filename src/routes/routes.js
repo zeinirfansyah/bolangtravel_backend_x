@@ -22,6 +22,11 @@ const {
   deleteAuthenticatedUser,
 } = require("../controllers/userController");
 
+const {
+  getAllTravelPackages,
+  getTravelPackageById
+} = require("../controllers/travelPackageController");
+
 // auth routes
 router.post("/auth/register", registerRules, register);
 router.post("/auth/login", login);
@@ -68,5 +73,9 @@ router.delete(
   authorizeRoles("superadmin"),
   deleteUser
 );
+
+// travelPackages routes
+router.get("/travel-packages", getAllTravelPackages);
+router.get("/travel-packages/:id", getTravelPackageById);
 
 module.exports = router;
