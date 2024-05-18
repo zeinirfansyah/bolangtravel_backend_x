@@ -1,0 +1,31 @@
+Catatan penting (kayaknya penting haha)
+
+- role system: ada 3 role yang diterapkan pada bolangtravel
+    - superadmin
+    - admin
+    - user
+
+- autentikasi:
+    - register: 
+        - ketika user registrasi akun, secara otomatis role yang didapatkan adalah role "user".
+        - belum ada handle buat upload foto
+    - logout: cuma ngasih return message aja ga ada logic buat refresh token, block token, atau apapun itu.
+    - login: ketika login nanti bakal ngasih return access token yang dipake buat autentikasi
+
+- otorisasi:
+    - superadmin: 
+        - create user baru
+        - edit user
+        - delete user (kecuai role superadmin gak bisa)
+    - superadmin & admin:
+        - get all users
+        - get user by id
+    - superadmin & admin & user:
+        - get profile (authenticated user)
+
+pertimbangan:
+- edit data profil pribadi (authenticated user)
+- delete akun pribadi (authenticated user) -> untuk role user aja
+- ditelaah lagi di bagian update :v
+
+apalagi? gatau belum kepikiran...
