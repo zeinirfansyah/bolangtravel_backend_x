@@ -20,14 +20,14 @@ exports.up = function (knex) {
     .createTable("travel_packages", (table) => {
       table.increments("id").primary();
       table
-        .enum("pacakage_category", ["family", "honeymoon", "solo"])
+        .enum("package_category", ["family", "honeymoon", "solo"])
         .defaultTo("family");
-      table.string("pacakage_title");
-      table.string("pacakage_location");
-      table.string("pacakage_duration");
-      table.double("pacakage_price");
-      table.text("pacakage_description");
-      table.string("pacakage_thumbnail");
+      table.string("package_title");
+      table.string("package_location");
+      table.string("package_duration");
+      table.double("package_price");
+      table.text("package_description");
+      table.string("package_thumbnail");
       table.datetime("created_at").defaultTo(knex.fn.now());
       table.datetime("updated_at").nullable();
     })
@@ -79,7 +79,7 @@ exports.up = function (knex) {
       table.datetime("created_at").defaultTo(knex.fn.now());
       table.datetime("updated_at").nullable();
 
-      table.integer('booking_id').unsigned().unique();
+      table.integer("booking_id").unsigned().unique();
       table.foreign("booking_id").references("bookings.id");
     });
 };

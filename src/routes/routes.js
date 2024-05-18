@@ -10,6 +10,7 @@ const { login, register, logout } = require("../controllers/authController");
 const {
   registerRules,
   createUserRules,
+  createTravelPackageRules,
 } = require("../validations/validations");
 const {
   getAllUsers,
@@ -21,6 +22,12 @@ const {
   updateAuthenticatedUser,
   deleteAuthenticatedUser,
 } = require("../controllers/userController");
+
+const {
+  getAllTravelPackages,
+  getTravelPackageById,
+  createTravelPackage,
+} = require("../controllers/travelPackageController");
 
 // auth routes
 router.post("/auth/register", registerRules, register);
@@ -67,6 +74,17 @@ router.delete(
   authenticateToken,
   authorizeRoles("superadmin"),
   deleteUser
+);
+
+// travelPackages routes
+router.get("/travel-packages", getAllTravelPackages);
+router.get("/travel-packages/:id", getTravelPackageById);
+router.post(
+  "/travel-packages",
+  authenticateToken,
+  authorizeRoles("superadmin", "admin"),
+  createTravelPackageRules,
+  createTravelPackage,
 );
 
 module.exports = router;
