@@ -144,6 +144,69 @@ async function updateUser(req, res) {
   return res.status(200).json({ success: true, data: updatedUser[0] });
 }
 
+async function updateAuthenticatedUser(req, res) {
+  const userId = req.user.id;
+  const { fullname, email, phone, address, avatar, username, password } =
+    req.body;
+
+  const account = await db("users").where("id", userId).first();
+
+  if (!account) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  if (username && username !== account.username) {
+    const usernameExists = await db("users")
+      .where("username", username)
+      .first();
+    if (usernameExists) {
+      return res.status(409).json({ message: "Username already exists" });
+    }
+  }
+
+  if (email && email !== account.email) {
+    const emailExists = await db("users").where("email", email).first();
+    if (emailExists) {
+      return res.status(409).json({ message: "Email already exists" });
+    }
+  }
+
+  let hashedPassword;
+  if (password) {
+    hashedPassword = await bcrypt.hash(password, 10);
+  }
+
+  const updatedFields = {
+    fullname: fullname || account.fullname,
+    email: email || account.email,
+    phone: phone || account.phone,
+    address: address || account.address,
+    avatar: avatar || account.avatar,
+    username: username || account.username,
+  };
+
+  if (hashedPassword) {
+    updatedFields.password = hashedPassword;
+  }
+
+  const updatedUser = await db("users")
+    .where("id", userId)
+    .update(updatedFields)
+    .returning("*");
+
+  if (!updatedUser) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  return res.status(200).json({ success: true, data: updatedUser[0] });
+}
+
 // async function deleteUser(req, res) {
 //   const { id } = req.params;
 //   await db("users").where("id", id).del();
@@ -152,7 +215,6 @@ async function updateUser(req, res) {
 
 async function deleteUser(req, res) {
   const { id } = req.params;
-  const userId = req.user.id;
 
   const targetUser = await db("users").where("id", id).first();
   if (!targetUser) {
@@ -167,6 +229,20 @@ async function deleteUser(req, res) {
   return res.status(403).json({ success: false, message: "Forbidden" });
 }
 
+async function deleteAuthenticatedUser(req, res) {
+  const userId = req.user.id;
+
+  const user = await db("users").where("id", userId).first();
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
+  }
+
+  await db("users").where("id", userId).del();
+  return res
+    .status(200)
+    .json({ success: true, message: "User profile deleted" });
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -174,4 +250,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  updateAuthenticatedUser,
+  deleteAuthenticatedUser,
 };

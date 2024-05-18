@@ -18,12 +18,19 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  updateAuthenticatedUser,
+  deleteAuthenticatedUser,
 } = require("../controllers/userController");
 
 // auth routes
 router.post("/auth/register", registerRules, register);
 router.post("/auth/login", login);
 router.post("/auth/logout", logout);
+
+// profile routes
+router.get("/profile", authenticateToken, getAuthenticatedUser);
+router.put("/profile", authenticateToken, updateAuthenticatedUser);
+router.delete("/profile", authenticateToken, deleteAuthenticatedUser);
 
 // user routes
 router.get(
@@ -39,8 +46,6 @@ router.get(
   authorizeRoles("superadmin", "admin"),
   getUserById
 );
-
-router.get("/profile", authenticateToken, getAuthenticatedUser);
 
 router.post(
   "/users",

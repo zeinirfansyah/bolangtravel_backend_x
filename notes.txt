@@ -22,10 +22,10 @@ Catatan penting (kayaknya penting haha)
         - get user by id
     - superadmin & admin & user:
         - get profile (authenticated user)
+        - edit data profil pribadi (authenticated user)
+        - delete akun pribadi (authenticated user)
 
 pertimbangan:
-- edit data profil pribadi (authenticated user)
-- delete akun pribadi (authenticated user) -> untuk role user aja
 - ditelaah lagi di bagian update :v
 
 apalagi? gatau belum kepikiran...
