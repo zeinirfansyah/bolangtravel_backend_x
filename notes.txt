@@ -20,10 +20,13 @@ Catatan penting (kayaknya penting haha)
     - superadmin & admin:
         - get all users
         - get user by id
+        - post travel package
     - superadmin & admin & user:
         - get profile (authenticated user)
         - edit data profil pribadi (authenticated user)
         - delete akun pribadi (authenticated user)
+        - get travel package
+        - get travel package by id
 
 pertimbangan:
 - ditelaah lagi di bagian update :v
