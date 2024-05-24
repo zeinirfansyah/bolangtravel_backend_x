@@ -103,6 +103,8 @@ async function createTravelPackage(req, res) {
       package_price,
       package_description,
       package_thumbnail,
+      rundowns, 
+      destinations, 
     } = req.body;
 
     const errors = validationResult(req);
@@ -120,8 +122,29 @@ async function createTravelPackage(req, res) {
       package_thumbnail,
     });
 
+    const travelPackageId = newTravelPackage[0]; 
+
+    const createdRundowns = await Promise.all(
+      rundowns.map(async (rundown) => {
+        return await db("rundowns").insert({
+          rundown_title: rundown.rundown_title,
+          rundown_agenda: rundown.rundown_agenda,
+          travel_package_id: travelPackageId,
+        });
+      })
+    );
+
+    const attachedDestinations = await Promise.all(
+      destinations.map(async (destinationId) => {
+        return await db("package_destinations").insert({
+          travel_package_id: travelPackageId,
+          destination_id: destinationId,
+        });
+      })
+    );
+
     const data = {
-      id: newTravelPackage[0],
+      id: travelPackageId,
       package_category,
       package_title,
       package_location,
@@ -129,9 +152,11 @@ async function createTravelPackage(req, res) {
       package_price,
       package_description,
       package_thumbnail,
+      rundowns: createdRundowns,
+      destinations: attachedDestinations,
     };
 
-    return res.status(200).json({ success: true, data });
+    return res.status(201).json({ success: true, data });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -140,6 +165,7 @@ async function createTravelPackage(req, res) {
     });
   }
 }
+
 
 module.exports = {
   getAllTravelPackages,
