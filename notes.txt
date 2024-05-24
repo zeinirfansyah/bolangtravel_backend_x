@@ -9,26 +9,34 @@ Catatan penting (kayaknya penting haha)
     - register: 
         - ketika user registrasi akun, secara otomatis role yang didapatkan adalah role "user".
         - belum ada handle buat upload foto
-    - logout: cuma ngasih return message aja ga ada logic buat refresh token, block token, atau apapun itu.
+    - logout: cuma ngasih return message aja ga ada logic buat refresh token, block token, destroy seasson, atau apapun itu.
     - login: ketika login nanti bakal ngasih return access token yang dipake buat autentikasi
 
 - otorisasi:
     - superadmin: 
         - create user baru
-        - edit user
+        - update user
         - delete user (kecuai role superadmin gak bisa)
     - superadmin & admin:
         - get all users
         - get user by id
-        - post travel package
+        - create travel package beserta detailnya (rundown & destination terkait travel package yang akan dibuat)
+        - create destination
     - superadmin & admin & user:
         - get profile (authenticated user)
-        - edit data profil pribadi (authenticated user)
+        - update data profil pribadi (authenticated user)
         - delete akun pribadi (authenticated user)
-        - get travel package
-        - get travel package by id
+        - get travel package beserta detailnya
+        - get travel package beserta detailnya by id
 
-pertimbangan:
+todos:
 - ditelaah lagi di bagian update :v
+- update travel package,
+- delete travel package,
+- get all destination,
+- get destination by id,
+- update destination,
+- delete destination,
+- booking & checkout mechanism.
 
 apalagi? gatau belum kepikiran...
