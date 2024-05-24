@@ -34,6 +34,30 @@ const createTravelPackageRules = [
     .notEmpty()
     .withMessage("Package duration is required"),
   check("package_price").notEmpty().withMessage("Package price is required"),
+  check("package_description")
+    .notEmpty()
+    .withMessage("Package description is required"),
+  check("package_thumbnail")
+    .notEmpty()
+    .withMessage("Package thumbnail is required"),
+  check("rundown_title").notEmpty().withMessage("Rundown title is required"),
+  check("rundown_agenda").notEmpty().withMessage("Rundown agenda is required"),
+  check("travel_package_id")
+    .notEmpty()
+    .withMessage("Travel package id is required"),
+  check("destination_id").notEmpty().withMessage("Destination id is required"),
 ];
 
-module.exports = { registerRules, createUserRules, createTravelPackageRules };
+const createDestinationRules = [
+  check("destination_name")
+    .notEmpty()
+    .withMessage("Destination name is required"),
+  check("destination_description")
+    .notEmpty()
+    .withMessage("Destination description is required"),
+  check("destination_thumbnail")
+    .notEmpty()
+    .withMessage("Destination thumbnail is required"),
+]
+
+module.exports = { registerRules, createUserRules, createTravelPackageRules, createDestinationRules };

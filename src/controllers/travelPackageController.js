@@ -103,8 +103,8 @@ async function createTravelPackage(req, res) {
       package_price,
       package_description,
       package_thumbnail,
-      rundowns, 
-      destinations, 
+      rundowns,
+      destinations,
     } = req.body;
 
     const errors = validationResult(req);
@@ -122,7 +122,7 @@ async function createTravelPackage(req, res) {
       package_thumbnail,
     });
 
-    const travelPackageId = newTravelPackage[0]; 
+    const travelPackageId = newTravelPackage[0];
 
     const createdRundowns = await Promise.all(
       rundowns.map(async (rundown) => {
@@ -166,9 +166,42 @@ async function createTravelPackage(req, res) {
   }
 }
 
+async function createDestination(req, res) {
+  try {
+    const { destination_name, destination_description, destination_thumbnail } =
+      req.body;
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      return res.status(400).json({ errors: error.array() });
+    }
+
+    const newDestination = await db("destinations").insert({
+      destination_name,
+      destination_description,
+      destination_thumbnail,
+    });
+
+    const data = {
+      id: newDestination[0],
+      destination_name,
+      destination_description,
+      destination_thumbnail,
+    };
+
+    return res.status(201).json({ success: true, data });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error creating destinations",
+    });
+  }
+}
 
 module.exports = {
   getAllTravelPackages,
   getTravelPackageById,
   createTravelPackage,
+  createDestination,
 };
