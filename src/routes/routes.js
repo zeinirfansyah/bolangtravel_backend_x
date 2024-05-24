@@ -11,6 +11,7 @@ const {
   registerRules,
   createUserRules,
   createTravelPackageRules,
+  createDestinationRules,
 } = require("../validations/validations");
 const {
   getAllUsers,
@@ -27,6 +28,7 @@ const {
   getAllTravelPackages,
   getTravelPackageById,
   createTravelPackage,
+  createDestination,
 } = require("../controllers/travelPackageController");
 
 // auth routes
@@ -85,6 +87,15 @@ router.post(
   authorizeRoles("superadmin", "admin"),
   createTravelPackageRules,
   createTravelPackage,
+);
+
+// destinations routes
+router.post(
+  "/destinations",
+  authenticateToken,
+  authorizeRoles("superadmin", "admin"),
+  createDestinationRules,
+  createDestination
 );
 
 module.exports = router;
