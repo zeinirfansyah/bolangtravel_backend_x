@@ -29,6 +29,7 @@ const {
   getTravelPackageById,
   createTravelPackage,
   createDestination,
+  updateTravelPackage,
 } = require("../controllers/travelPackageController");
 
 // auth routes
@@ -86,7 +87,13 @@ router.post(
   authenticateToken,
   authorizeRoles("superadmin", "admin"),
   createTravelPackageRules,
-  createTravelPackage,
+  createTravelPackage
+);
+router.patch(
+  "/travel-packages/:id",
+  authenticateToken,
+  authorizeRoles("superadmin", "admin"),
+  updateTravelPackage
 );
 
 // destinations routes
