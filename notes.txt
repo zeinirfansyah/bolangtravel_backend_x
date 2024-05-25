@@ -22,6 +22,10 @@ Catatan penting (kayaknya penting haha)
         - get user by id
         - create travel package beserta detailnya (rundown & destination terkait travel package yang akan dibuat)
         - create destination
+        - update travel package 
+            note: 
+                - pas update bagian rundown sama destination datanya di recreate gak diupdate.
+                - terus data harus dikirim lengkap termasuk unupdated data nya, gak sama kayak update user yang bisa kirim updated data seperlunya aja.
     - superadmin & admin & user:
         - get profile (authenticated user)
         - update data profil pribadi (authenticated user)
@@ -30,13 +34,14 @@ Catatan penting (kayaknya penting haha)
         - get travel package beserta detailnya by id
 
 todos:
-- ditelaah lagi di bagian update :v
-- update travel package,
 - delete travel package,
 - get all destination,
 - get destination by id,
 - update destination,
 - delete destination,
 - booking & checkout mechanism.
+
+- ditelaah lagi di bagian update
+- Refactor jadi clean
 
 apalagi? gatau belum kepikiran...
